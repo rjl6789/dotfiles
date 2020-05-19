@@ -1,5 +1,5 @@
 #!/bin/sh
-. ~/.xprofile
 . ~/.profile
+. ~/.xprofile
 xrdb -merge ~/.Xresources
 exec startspectrwm
