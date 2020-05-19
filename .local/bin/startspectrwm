@@ -1,0 +1,5 @@
+#!/bin/sh
+# Run user xsession shell script
+script="$HOME/.xsession-spectrwm"
+. "$script"
+spectrwm

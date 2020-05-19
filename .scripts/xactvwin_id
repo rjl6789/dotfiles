@@ -1,0 +1,3 @@
+#!/bin/bash
+xid=$(printf "%lu\n" $(xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f2 | tr a-z A-Z))
+echo "$xid"

@@ -1,0 +1,271 @@
+Xft.dpi: 96
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+
+!---------------------------------------------------------
+!
+!  XTERM
+!
+!---------------------------------------------------------
+!
+! Use a nice truetype font and size by default... 
+xterm*faceName: xft:Ubuntu Mono
+xterm*faceSize: 12
+
+! Every shell is a login shell by default (for inclusion of all necessary environment variables)
+xterm*loginshell: true
+
+! I like a LOT of scrollback...
+xterm*savelines: 16384
+
+! double-click to select whole URLs :D
+xterm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+
+! get rid of stupid menu bar in xterm
+xterm.ToolBar:  false
+
+! right hand side scrollbar...
+xterm*rightScrollBar: true
+xterm*ScrollBar: false
+
+! stop output to terminal from jumping down to bottom of scroll again
+xterm*scrollTtyOutput: false
+
+!---------------------------------------------------------
+!
+!  URXVT
+!
+!---------------------------------------------------------
+!
+! URxvt Appearance
+URxvt.font: xft:Ubuntu Mono:size=12:antialias=true:autohint=true,xft:Inconsolata for Powerline:size=12:antialias=true:autohint=true
+! URxvt.boldFont: DejaVu Sans Mono Book
+! URxvt.italicFont: DejaVu Sans Mono Book
+! URxvt.boldItalicfont: DejaVu Sans Mono Book
+URxvt.letterSpace: 0
+URxvt.lineSpace: 0
+! URxvt.geometry: 92x24
+URxvt.internalBorder: 5
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: false
+URxvt.saveline: 2048
+URxvt.scrollBar: false
+URxvt.scrollBar_right: false
+URxvt.urgentOnBell: true
+URxvt.depth: 24
+URxvt.iso14755: false
+
+!---------------------------------------------------------
+!
+!  ST
+!
+!---------------------------------------------------------
+!
+st*font: DejaVu Sans Mono for Powerline:style=Book:size=12
+
+!---------------------------------------------------------
+!
+!  COLOUR SCHEMES
+!
+!---------------------------------------------------------
+!
+
+!! gruvbox Colorscheme
+*cursorColor: #afbfbf
+*foreground: #ebdbb2
+*background: #282828
+!
+!! black
+*color0: #1d2021
+*color8: #928374
+!
+!! red
+*color1: #cc241d
+*color9: #fb4934
+!
+!! green
+*color2: #98971a
+*color10: #b8bb26
+!
+!! yellow
+*color3: #d79921
+*color11: #fabd2f
+!
+!! blue
+*color4: #458588
+*color12: #83a598
+!
+!! magenta
+*color5: #b16286
+*color13: #d3869b
+!
+!! cyan
+*color6: #689d6a
+*color14: #8ec07c
+!
+!! white
+*color7: #a89984
+*color15: #ebdbb2
+!
+!
+!---------------------------------------------------------
+! Application specific color schemes
+!---------------------------------------------------------
+
+!! xterm Colorscheme
+!! gruvbox Colorscheme
+xterm*cursorColor: #afbfbf
+xterm*foreground: #ebdbb2
+xterm*background: #282828
+!
+!! black
+xterm*color0: #1d2021
+xterm*color8: #928374
+!
+!! red
+xterm*color1: #cc241d
+xterm*color9: #fb4934
+!
+!! green
+xterm*color2: #98971a
+xterm*color10: #b8bb26
+!
+!! yellow
+xterm*color3: #d79921
+xterm*color11: #fabd2f
+!
+!! blue
+xterm*color4: #458588
+xterm*color12: #83a598
+!
+!! magenta
+xterm*color5: #b16286
+xterm*color13: #d3869b
+!
+!! cyan
+xterm*color6: #689d6a
+xterm*color14: #8ec07c
+!
+!! white
+xterm*color7: #a89984
+xterm*color15: #ebdbb2
+!xterm*cursorColor: #afbfbf
+!xterm*foreground: #93a1a1
+!xterm*background: #141c21
+!
+!! black
+!xterm*color0: #263640
+!xterm*color8: #4a697d
+!
+!! red
+!xterm*color1: #d12f2c
+!xterm*color9: #fa3935
+!
+!! green
+!xterm*color2: #819400
+!xterm*color10: #a4bd00
+!
+!! yellow
+!xterm*color3: #b08500
+!xterm*color11: #d9a400
+!
+!! blue
+!xterm*color4: #2587cc
+!xterm*color12: #2ca2f5
+!
+!! magenta
+!xterm*color5: #696ebf
+!xterm*color13: #8086e8
+!
+!! cyan
+!xterm*color6: #289c93
+!xterm*color14: #33c5ba
+!
+!! white
+!xterm*color7: #bfbaac
+!xterm*color15: #fdf6e3
+
+
+!! Urxvt Colorscheme
+!
+!! special
+!URxvt*foreground: #93a1a1
+!URxvt*background: #141c21
+!URxvt*cursorColor: #afbfbf
+!
+!! black
+!URxvt*color0: #263640
+!URxvt*color8: #4a697d
+!
+!! red
+!URxvt*color1: #d12f2c
+!URxvt*color9: #fa3935
+!
+!! green
+!URxvt*color2: #819400
+!URxvt*color10: #a4bd00
+!
+!! yellow
+!URxvt*color3: #b08500
+!URxvt*color11: #d9a400
+!
+!! blue
+!URxvt*color4: #2587cc
+!URxvt*color12: #2ca2f5
+!
+!! magenta
+!URxvt*color5: #696ebf
+!URxvt*color13: #8086e8
+!
+!! cyan
+!URxvt*color6: #289c93
+!URxvt*color14: #33c5ba
+!
+!! white
+!URxvt*color7: #bfbaac
+!URxvt*color15: #fdf6e3
+!
+!
+!!! st terminal (Xresources patch)
+!
+!! special
+!
+!st*foreground: #93a1a1
+!st*background: #141c21
+!st*cursorColor: #afbfbf
+!
+!! black
+!st*color0: #263640
+!st*color8: #4a697d
+!
+!! red
+!st*color1: #d12f2c
+!st*color9: #fa3935
+!
+!! green
+!st*color2: #819400
+!st*color10: #a4bd00
+!
+!! yellow
+!st*color3: #b08500
+!st*color11: #d9a400
+!
+!! blue
+!st*color4: #2587cc
+!st*color12: #2ca2f5
+!
+!! magenta
+!st*color5: #696ebf
+!st*color13: #8086e8
+!
+!! cyan
+!st*color6: #289c93
+!st*color14: #33c5ba
+!
+!! white
+!st*color7: #bfbaac
+!st*color15: #fdf6e3

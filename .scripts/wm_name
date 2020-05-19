@@ -1,0 +1,10 @@
+#!/bin/bash
+if hash xprop >/dev/null 2>&1; then
+        ID="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
+        WM="$(xprop -id "${ID##* }" -notype -len 100 -f _NET_WM_NAME 8t)"
+        WM="${WM/*WM_NAME = }"
+        WM="${WM/\"}"
+        WM="${WM/\"*}"
+        WM="${WM,,}"
+	echo $WM
+fi

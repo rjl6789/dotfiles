@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+find "$1" -maxdepth 1 -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished round 1"
+find "$1" -maxdepth 2 -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished round 2"
+find "$1" -maxdepth 3 -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished round 3"
+find "$1" -maxdepth 4 -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished round 4"
+find "$1" -maxdepth 5 -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished round 5"
+find "$1" -maxdepth 6 -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished round 6"
+find "$1" -type d -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished renaming directories"
+find "$1" -type f -iname "*['\"\!\{\}\[\]]*" -exec /bin/bash -c 'mv -n "${1}" "${1//["'\''"\"\!\{\}\[\]]/}" ; echo "${1}"' {} {} \;
+echo "finished renaming files"

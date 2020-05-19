@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# You can call this script like this:
+# $ ./volumeControl.sh up
+# $ ./volumeControl.sh down
+# $ ./volumeControl.sh togmute
+
+# Script inspired by these wonderful people:
+# https://github.com/dastorm/volume-notification-dunst/blob/master/volume.sh
+# https://gist.github.com/sebastiencs/5d7227f388d93374cebdf72e783fbd6a
+
+msgId="6666"
+
+function get_volume {
+  vol=$(pavolume --value)
+  echo "$vol"
+}
+function get_mutestat {
+  stat=$(pavolume --mutestat)
+  echo "$stat"
+}
+
+function send_notification {
+  stat=$(get_mutestat)
+  if [ "${stat}" = 'yes' ]
+  then
+     icon="notification-audio-volume-muted"
+  else
+     icon="notification-audio-volume-medium"
+  fi
+  vol=$(get_volume)
+  # Send the notification
+  dunstify  -a "volumeControl" -i "$icon" -r "$msgId" -u normal "volume: ${vol}%" "$(getProgressString 20 "#" "-" $vol)"
+}
+
+case $1 in
+  up)
+    pavolume --up
+    send_notification
+    ;;
+  down)
+    pavolume --down
+    send_notification
+    ;;
+  togmute)
+    pavolume --togmute
+    send_notification
+    ;;
+esac

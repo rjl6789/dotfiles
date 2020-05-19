@@ -1,0 +1,85 @@
+#!/bin/bash
+TMPDIR=crypt-tar-backup-$(date +%Y-%m-%d)
+TMPFILENAME=${TMPDIR}.tar.gpg
+README=${TMPDIR}/README
+SCRIPTPATH="${1}"
+LOGFILE="/tmp/enc_tar.log"
+
+# -------------------- Setup I/O redirections --------------------
+# Magic from
+# http://superuser.com/questions/86915/force-bash-script-to-use-tee-without-piping-from-the-command-line
+#
+#  ##### Redirection matrix in the case when quiet mode is ON #####
+#
+#  QUIET mode ON  | shown on screen | not shown on screen
+#  ---------------+-----------------+----------------------
+#  logged         |    fd2, fd3     |      fd1, fd5
+#  not logged     |      fd4        |         -
+#
+#  ##### Redirection matrix in the case when quiet mode is OFF #####
+#
+#  QUIET mode OFF | shown on screen | not shown on screen
+#  ---------------+-----------------+----------------------
+#  logged         | fd1, fd2, fd3   |        fd5
+#  not logged     |      fd4        |         -
+#
+# fd1 is stdout and is always logged but only shown if not QUIET
+# fd2 is stderr and is always shown on screen and logged
+# fd3 is like stdout but always shown on screen (for interactive prompts)
+# fd4 is always shown on screen but never logged (for the usage text)
+# fd5 is never shown on screen but always logged (for delimiters in the log)
+#
+
+# fd2 and fd3 are always logged and shown on screen via tee
+# for fd2 (original stderr) the output of tee needs to be redirected to stderr
+exec 2> >(tee -ia "${LOGFILE}" >&2)
+# create fd3 as a redirection to stdout and the logfile via tee
+exec 3> >(tee -ia "${LOGFILE}")
+# create fd4 as a copy of stdout, but that won't be redirected to tee
+# so that it is always shown and never logged
+exec 4>&1
+
+# create fd5 as a direct redirection to the logfile
+# so that the content is never shown on screen but always logged
+exec 5>> "${LOGFILE}"
+
+# finally we modify stdout (fd1) to always being logged (like fd3 and fd5)
+# but only being shown on screen if quiet mode is not active
+if [[ ${QUIET} == 1 ]]; then
+  # Quiet mode: stdout not shown on screen but still logged via fd5
+  exec 1>&5
+else
+  # Normal mode: stdout shown on screen and logged via fd3
+  exec 1>&3
+fi
+# tests for debugging the magic
+#echo "redirected to fd1"
+#echo "redirected to fd2" >&2
+#echo "redirected to fd3" >&3
+#echo "redirected to fd4" >&4
+#echo "redirected to fd5" >&5
+
+echo "You are backing up: " >&3
+echo "     1. folder: ${SCRIPTPATH}" >&3
+
+echo "Backup tarball will be encrypted and saved to: $(pwd)/${TMPFILENAME}" >&3
+  echo >&3
+  echo ">> Are you sure you want to do that ('yes' to continue)?" >&3
+  read -r ANSWER
+  if [ "${ANSWER}" != "yes" ]; then
+    echo "You said << ${ANSWER} >> so I am exiting now." >&3
+    echo -e "---------------------    END    ---------------------\n" >&5
+    exit 1
+  fi
+
+  mkdir -p "${TMPDIR}"
+  cp -r "${SCRIPTPATH}" "${TMPDIR}"/
+
+  echo "Encrypting tarball, choose a password you'll remember..." >&3
+  tar -cf - "${TMPDIR}" | gpg --pinentry-mode loopback -aco "${TMPFILENAME}"
+  rm -Rf "${TMPDIR}"
+  echo -e "\nIMPORTANT!!" >&3
+  echo ">> To restore these files, run the following (remember your password):" >&3
+  echo "gpg -d ${TMPFILENAME} | tar -xf -" >&3
+  echo -e "\nYou may want to write the above down and save it with the file." >&3
+
