@@ -138,7 +138,7 @@ bat() {
 	fi
 
 	if (( $pow > 0 )); then
-		BATT_TIME=$( echo "$nrg $pow" | awk '{printf "%.1f", $1 / $2}' )
+		BATT_TIME="$( echo "$nrg $pow" | awk '{printf "%.1f", $1 / $2}' )hr"
 	else
 		BATT_TIME="full"
 	fi
@@ -146,7 +146,7 @@ bat() {
 	BATT_PCT=$(( (bat0_pct + bat1_pct)/2 ))
 	apply_colors
 
-	echo -e "${COLOR}PWR: $bat0 ${bat1}${COLOR} ${BATT_TIME}hr"
+	echo -e "${COLOR}PWR: $bat0 ${bat1}${COLOR} ${BATT_TIME}"
 }
 
 ## CPU
