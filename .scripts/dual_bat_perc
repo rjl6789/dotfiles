@@ -1,0 +1,36 @@
+#!/bin/bash
+bat0=$(cat /sys/class/power_supply/BAT0/energy_now)
+bat1=$(cat /sys/class/power_supply/BAT1/energy_now)
+bat0_full=$(cat /sys/class/power_supply/BAT0/energy_full)
+bat1_full=$(cat /sys/class/power_supply/BAT1/energy_full)
+bat0_stat=$(cat /sys/class/power_supply/BAT0/status)
+bat1_stat=$(cat /sys/class/power_supply/BAT1/status)
+bat0_pow=$(cat /sys/class/power_supply/BAT0/power_now)
+bat1_pow=$(cat /sys/class/power_supply/BAT1/power_now)
+
+bat0_perc=$(bc <<< "scale=3; 100*$bat0/$bat0_full")
+bat1_perc=$(bc <<< "scale=3; 100*$bat1/$bat1_full")
+
+bat_tot=$(bc <<< "$bat0_full+$bat1_full")
+bat0_weight=$(bc <<< "scale=3; $bat0_full/$bat_tot")
+bat1_weight=$(bc <<< "scale=3; $bat1_full/$bat_tot")
+
+total=$(bc <<< "scale=0; ($bat0_perc*$bat0_weight+$bat1_perc*$bat1_weight)/1")
+
+stat="U"
+if [ "$bat0_stat" == "Discharging" ]; then
+	stat="D0"
+elif [ "$bat0_stat" == "Charging" ]; then
+	stat="C0"
+elif [ "$bat1_stat" == "Discharging" ]; then
+	stat="D1" 
+elif [ "$bat1_stat" == "Charging" ]; then
+	stat="C1"
+fi
+
+power=$(bc <<< "$bat0_pow+$bat1_pow")
+energy=$(bc <<< "$bat0+$bat1")
+timeleft=$(bc <<< "scale=1;$energy/$power")
+
+#echo "TOT: $total | bat0: $bat0_perc | bat1: $bat1_perc | bat0_weight: $bat0_weight | bat1_weight: $bat1_weight"
+echo "${total}% $stat $timeleft"
