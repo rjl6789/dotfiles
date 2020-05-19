@@ -1,2 +1,9 @@
-xset s 180 120 
+# xprofile
+# set global variables for every x desktop environment
+
+#export QT_QPA_PLATFORMTHEME="qt5ct"
+## note: installed kde...so...
+export QT_QPA_PLATFORMTHEME="kde"
+
+# cursor fiddle
 xsetroot -cursor_name left_ptr
