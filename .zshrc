@@ -363,4 +363,4 @@ export PURE_PROMPT_SYMBOL="#"
 # 	sleep 2
 #	exec tmux new-session -A -D -s main
 #fi
-
+alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'

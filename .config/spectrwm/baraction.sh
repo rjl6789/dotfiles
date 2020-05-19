@@ -41,6 +41,7 @@ battery_charge() {
 	battery_state=$(cat $battery_path/status)
 	battery_full=$battery_path/energy_full
 	battery_current=$battery_path/energy_now
+	battery_power=$battery_path/power_now
 	if [ $battery_state == 'Discharging' ]; then
 		BATT_CONNECTED=0
 	elif [ $battery_state == 'Unknown' ]; then
@@ -50,7 +51,11 @@ battery_charge() {
 	fi
 	now=$(cat $battery_current)
 	full=$(cat $battery_full)
+	power=$(cat $battery_power)
 	BATT_PCT=$((100 * $now / $full))
+	BATT_NRG=$now
+	BATT_POW=$power
+	BATT_FULL=$full
 }
 
 apply_colors() {
@@ -108,20 +113,40 @@ bat() {
 	bat1_path="/sys/class/power_supply/BAT1"
 
 	battery_charge $bat0_path
-	bat1_pct=$BATT_PCT
+	bat0_pct=$BATT_PCT
+	bat0_nrg=$BATT_NRG
+	bat0_pow=$BATT_POW
+	bat0_full=$BATT_FULL
+	bat0_connected=$BATT_CONNECTED
 	apply_colors
 	bat0=$(print_status a)
 
 	battery_charge $bat1_path
-	bat2_pct=$BATT_PCT
+	bat1_pct=$BATT_PCT
+	bat1_nrg=$BATT_NRG
+	bat1_pow=$BATT_POW
+	bat1_full=$BATT_FULL
+	bat1_connected=$BATT_CONNECTED
 	apply_colors
 	bat1=$(print_status b)
 
-	BATT_PCT=$(( (bat1_pct + bat2_pct)/2 ))
+	pow=$(( $bat1_pow + $bat0_pow ))
+	if (( $bat1_connected + $bat0_connected == 3)); then
+		nrg=$(( $bat1_full + $bat0_full - $bat1_nrg - $bat0_nrg ))
+	else
+		nrg=$(( $bat1_nrg + $bat0_nrg ))
+	fi
+
+	if (( $pow > 0 )); then
+		BATT_TIME=$( echo "$nrg $pow" | awk '{printf "%.1f", $1 / $2}' )
+	else
+		BATT_TIME="full"
+	fi
+
+	BATT_PCT=$(( (bat0_pct + bat1_pct)/2 ))
 	apply_colors
-	#bat0=$(/usr/local/bin/battery -s -b /sys/class/power_supply/BAT0)
-	#bat1=$(/usr/local/bin/battery -s -b /sys/class/power_supply/BAT1)
-	echo -e "${COLOR}PWR: $bat0 $bat1"
+
+	echo -e "${COLOR}PWR: $bat0 ${bat1}${COLOR} ${BATT_TIME}hr"
 }
 
 ## CPU
