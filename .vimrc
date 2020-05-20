@@ -109,7 +109,7 @@ call plug#begin('~/.vim/plugged')
 	" Platform specific options and plugins
 	"-----------------------------------------
 	if has('mac')
-			echo 'mac'
+		echo 'mac'
 	elseif has('win32') || has('win64')
 		source $VIMRUNTIME/vimrc_example.vim
 		source $VIMRUNTIME/mswin.vim
@@ -165,6 +165,7 @@ call plug#end()
 "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 " End of plugin configuration
 "-----------------------------------------
+" Plugins now activated. Set options that required activation
 
 if filereadable(expand("~/.vimrc_background"))
 	let base16colorspace=256
