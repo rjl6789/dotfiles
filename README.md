@@ -1,19 +1,20 @@
 # Rob's Dots
 
 The intention is to have a system whereby the tiling wm doesn't have it's config / setup get clobbered if a desktop environment gets installed.
-This achieved by having a wrapper around the main executable which can source a specific setup file which  auto starts apps and sets a friendly environment.
+
+This achieved by having a wrapper around the main executable which can source a specific setup file, which auto starts apps and sets a friendly environment.
 
 ## Min Dependancies
 
 - i3lock-fancy-rapid	- AUR (screen locking - replace with any locker, adjust the call in `.xsession-spectrwm`
-- xss-lock		- Arch (screen locking)
-- dswitcher		- https://github.com/rjl6789/dswitcher (spectrwm switch / grab any window)
-- dmenu			- Arch (for lots - note arch version seems to support xft fonts)
-- alacritty		- Arch (a terminal - alter spectrwm.conf if want to use another)
-- dex			- Arch (for autostarting)
-- stalonetray 		- Arch - so I can see bluetooth and network - although nmtui and bluetoothctl are good cli apps
-- light 		- Arch - controls screen brightness (also includes udev rules so permissions aren't an issue)
-- fzf 			- Arch - for fuzzy finding files and greping in vim
+- xss-lock    - Arch (screen locking)
+- dswitcher   - https://github.com/rjl6789/dswitcher (spectrwm switch / grab any window)
+- dmenu       - Arch (for lots - note arch version seems to support xft fonts)
+- alacritty   - Arch (a terminal - alter spectrwm.conf if want to use another)
+- dex         - Arch (for autostarting)
+- stalonetray - Arch - so I can see bluetooth and network - although nmtui and bluetoothctl are good cli apps
+- light       - Arch - controls screen brightness (also includes udev rules so permissions aren't an issue)
+- fzf         - Arch - for fuzzy finding files and grep'ing in vim
 - various scripts in `.scripts` folder
 
 ## starting
