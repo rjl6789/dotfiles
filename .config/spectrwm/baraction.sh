@@ -67,15 +67,15 @@ battery_charge() {
 
 apply_colors() {
     # Green
-    if [[ $BATT_PCT -ge 65 ]]; then
+    if [[ $BATT_PCT -ge 60 ]]; then
             COLOR=$good_color
     # Yellow
-    elif [[ $BATT_PCT -ge 25 ]] && [[ $BATT_PCT -lt 65 ]]; then
+    elif [[ $BATT_PCT -ge 15 ]] && [[ $BATT_PCT -lt 60 ]]; then
             COLOR=$middle_color
             COLOR="%F{$middle_color}"
             COLOR=$middle_color
     # Red
-    elif [[ $BATT_PCT -lt 25 ]]; then
+    elif [[ $BATT_PCT -lt 15 ]]; then
             COLOR=$warn_color
     fi
 }
