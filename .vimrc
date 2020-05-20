@@ -46,33 +46,28 @@ call plug#begin('~/.vim/plugged')
 	Plug 'itchyny/lightline.vim'
 	Plug 'mengelbrecht/lightline-bufferline'
 	Plug 'shinchu/lightline-gruvbox.vim'
-	"Plug 'vim-airline/vim-airline'
-	"Plug 'vim-airline/vim-airline-themes'
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	Plug 'tpope/vim-unimpaired'
-	Plug 'chriskempson/base16-vim'
-
+	if v:version > 800
+		Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	endif
 	"-----------------------------------------
 	" Platform specific plugins
 	"-----------------------------------------
 	if has('win32') || has('win64') || has("win32unix")
 		Plug 'ctrlpvim/ctrlp.vim'
-		let g:ctrlp_map = '<c-p>'
-		let g:ctrlp_cmd = 'CtrlP'
-		let g:ctrlp_working_path_mode = 'ra'
-		let g:ctrlp_show_hidden = 1
-		let g:ctrlp_match_window = 'min:4,max:10,results=100'
-		let g:ctrlp_max_files=0
-		let g:ctrlp_max_depth=40
 	elseif has('unix') && !has("win32unix")
-		Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-		Plug 'junegunn/fzf.vim'
-		nnoremap <C-p> :Files<cr>
-		" Pass an empty option dictionary if the screen is narrow
-		command! -bang -nargs=? -complete=dir Files
-			\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
-		" note: in .profile have set FZF_DEFAULT_COMMAND
-		" rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"
+		if executable('fzf')
+			Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+			Plug 'junegunn/fzf.vim'
+			nnoremap <C-p> :Files<cr>
+			" Pass an empty option dictionary if the screen is narrow
+			command! -bang -nargs=? -complete=dir Files
+				\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
+			" note: in .profile have set FZF_DEFAULT_COMMAND
+			" rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"
+		else
+			Plug 'ctrlpvim/ctrlp.vim'
+		endif
 	endif
 
 call plug#end()
@@ -85,18 +80,23 @@ call plug#end()
 " plugin universal config
 " ---------------------------------------
 "
+
+" CtrlP
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_match_window = 'min:4,max:10,results=100'
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
+
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
-" gruvbox, base16 and vim-unimpaired
-nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
-nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
-nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
-nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
-nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
-nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
 " coc.nvim
-source $HOME/.cocrc.vim
+if v:version > 800
+	source $HOME/.cocrc.vim
+endif
 
 " lightline
 let g:lightline = {
@@ -127,12 +127,6 @@ nmap <Leader>8 <Plug>lightline#bufferline#go(8)
 nmap <Leader>9 <Plug>lightline#bufferline#go(9)
 nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 
-"" airline
-"let g:airline#extensions#tabline#formatter = 'unique_tail'
-"let g:airline_powerline_fonts=1
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#whitespace#enabled = 0
-"
 "
 "-----------------------------------------
 " Platform specific options
@@ -176,14 +170,15 @@ endif
 "-----------------------------------------
 " Colour scheme
 "-----------------------------------------
-if filereadable(expand("~/.vimrc_background"))
-	let base16colorspace=256
-	source ~/.vimrc_background
-else
-	colorscheme gruvbox
-	set background=dark    " Setting dark mode
-	let g:gruvbox_contrast_dark = 'soft'
-endif
+colorscheme gruvbox
+set background=dark    " Setting dark mode
+let g:gruvbox_contrast_dark = 'soft'
+nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
 "-----------------------------------------
 " custom options and binds
