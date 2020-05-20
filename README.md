@@ -1,5 +1,8 @@
 # Rob's Dots
 
+The intention is to have a system whereby the tiling wm doesn't have it's config / setup get clobbered if a desktop environment gets installed.
+This achieved by having a wrapper around the main executable which can source a specific setup file which  auto starts apps and sets a friendly environment.
+
 ## Min Dependancies
 
 - i3lock-fancy-rapid	- AUR (screen locking - replace with any locker, adjust the call in `.xsession-spectrwm`
