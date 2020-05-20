@@ -13,6 +13,7 @@ This achieved by having a wrapper around the main executable which can source a 
 - dex			- Arch (for autostarting)
 - stalonetray 		- Arch - so I can see bluetooth and network - although nmtui and bluetoothctl are good cli apps
 - light 		- Arch - controls screen brightness (also includes udev rules so permissions aren't an issue)
+- fzf 			- Arch - for fuzzy finding files and greping in vim
 - various scripts in `.scripts` folder
 
 ## starting

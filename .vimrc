@@ -1,9 +1,15 @@
 "
 " vimrc - universal for linux, windows, msys, cygwin
 "
+"-----------------------------------------
 " ------ leader mapping ------
+"-----------------------------------------
 let g:mapleader = "\<Space>"
+"-----------------------------------------
+
+"-----------------------------------------
 " base options
+"-----------------------------------------
 set cursorline
 set lazyredraw
 set ignorecase
@@ -24,137 +30,154 @@ endif
 if has('gui_running')
 	set guioptions-=e
 endif
-"
-" Plugins
 
+"-----------------------------------------
+" Initialize plugin system
+" note: plugins don't get activated untill the
+" end block.
+" ok to apply "settings" though
+"-----------------------------------------
 call plug#begin('~/.vim/plugged')
      
          " Make sure you use single quotes
-	Plug 'ctrlpvim/ctrlp.vim'
 	Plug 'scrooloose/nerdtree'
 	Plug 'Xuyuanp/nerdtree-git-plugin'
+	Plug 'morhetz/gruvbox'
 	Plug 'itchyny/lightline.vim'
 	Plug 'mengelbrecht/lightline-bufferline'
 	Plug 'shinchu/lightline-gruvbox.vim'
 	"Plug 'vim-airline/vim-airline'
 	"Plug 'vim-airline/vim-airline-themes'
-	Plug 'morhetz/gruvbox'
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	Plug 'tpope/vim-unimpaired'
 	Plug 'chriskempson/base16-vim'
 
-     " Initialize plugin system
-call plug#end()
+	" ---------------------------------------
+	" plugin universal config
+	" note: haven't terminated the 'plug' block yet
+	" ---------------------------------------
+	"
+	" nerdtree
+	map <C-n> :NERDTreeToggle<CR>
+	" gruvbox, base16 and vim-unimpaired
+	nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+	nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+	nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+	nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+	nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+	nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
-" ---------------------------------------
-" plugin universal config
-" ---------------------------------------
+	" coc.nvim
+	source $HOME/.cocrc.vim
+
+	" lightline
+	let g:lightline = {
+	      \ 'colorscheme': 'gruvbox',
+	      \ 'active': {
+	      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+	      \ },
+	      \ 'tabline': {
+	      \   'left': [ ['buffers'] ],
+	      \   'right': [ ['close'] ]
+	      \ },
+	      \ 'component_expand': {
+	      \   'buffers': 'lightline#bufferline#buffers'
+	      \ },
+	      \ 'component_type': {
+	      \   'buffers': 'tabsel'
+	      \ }
+	      \ }
+	let g:lightline#bufferline#show_number = 2
+	nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+	nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+	nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+	nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+	nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+	nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+	nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+	nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+	nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+	nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+
+	"" airline
+	"let g:airline#extensions#tabline#formatter = 'unique_tail'
+	"let g:airline_powerline_fonts=1
+	"let g:airline#extensions#tabline#enabled = 1
+	"let g:airline#extensions#whitespace#enabled = 0
+	"
+	"-----------------------------------------
+	" Platform specific options and plugins
+	"-----------------------------------------
+	if has('mac')
+			echo 'mac'
+	elseif has('win32') || has('win64')
+		source $VIMRUNTIME/vimrc_example.vim
+		source $VIMRUNTIME/mswin.vim
+		behave mswin
+		"
+		" sourcing the mswin.vim file adds good stuff like ctrl-c for copy
+		" but messes up ctrl-f and ctrl-h keys - put these back to normal
+		" also put back increment number (ctrl-a) and decrement (ctrl-x) keys
+		"
+		unmap <C-F>
+		unmap <C-H>
+		unmap <C-A>
+		unmap <C-X>
+		" settings for temporary files
+		set nobackup
+		set noundofile
+		set swapfile
+		set dir=~/vimswap
+		set encoding=utf-8
+		scriptencoding utf8
+		set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
+		Plug 'ctrlpvim/ctrlp.vim'
+		let g:ctrlp_map = '<c-p>'
+		let g:ctrlp_cmd = 'CtrlP'
+		let g:ctrlp_working_path_mode = 'ra'
+		let g:ctrlp_show_hidden = 1
+		let g:ctrlp_match_window = 'min:4,max:10,results=100'
+		let g:ctrlp_max_files=0
+		let g:ctrlp_max_depth=40
+	elseif has("win32unix")
+		set term=xterm-256color
+		set encoding=utf-8
+		scriptencoding utf8
+		"echo 'running on msys/cygwin'
+		elseif has('unix') && !has("win32unix")
+		if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
+		     runtime! archlinux.vim
+		endif
+		Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+		Plug 'junegunn/fzf.vim'
+		nnoremap <C-p> :Files<cr>
+		" Pass an empty option dictionary if the screen is narrow
+		command! -bang -nargs=? -complete=dir Files
+			\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
+		" note: in .profile have set FZF_DEFAULT_COMMAND
+		" rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"
+	else
+		echo 'something else'
+	endif
+
+call plug#end()
 "
-" nerdtree
-map <C-n> :NERDTreeToggle<CR>
-" gruvbox, base16 and vim-unimpaired
+"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+" End of plugin configuration
+"-----------------------------------------
+
 if filereadable(expand("~/.vimrc_background"))
 	let base16colorspace=256
 	source ~/.vimrc_background
 else
 	colorscheme gruvbox
-endif
-set background=dark    " Setting dark mode
-let g:gruvbox_contrast_dark = 'soft'
-nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
-nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
-nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
-nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
-nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
-nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
-" coc.nvim
-source $HOME/.cocrc.vim
-" ctrl-p - note searcher is platform specific
-let g:ctrlp_working_path_mode = 'rac'
-" lightline
-let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'tabline': {
-      \   'left': [ ['buffers'] ],
-      \   'right': [ ['close'] ]
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers'
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel'
-      \ }
-      \ }
-let g:lightline#bufferline#show_number = 2
-nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-"" airline
-"let g:airline#extensions#tabline#formatter = 'unique_tail'
-"let g:airline_powerline_fonts=1
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#whitespace#enabled = 0
-"
-
-" Platform specific options
-if has('mac')
-     echo 'mac'
-elseif has('win32') || has('win64')
-     source $VIMRUNTIME/vimrc_example.vim
-     source $VIMRUNTIME/mswin.vim
-     behave mswin
-     "
-     " sourcing the mswin.vim file adds good stuff like ctrl-c for copy
-     " but messes up ctrl-f and ctrl-h keys - put these back to normal
-     " also put back increment number (ctrl-a) and decrement (ctrl-x) keys
-     "
-     unmap <C-F>
-     unmap <C-H>
-     unmap <C-A>
-     unmap <C-X>
-     " settings for temporary files
-     set nobackup
-     set noundofile
-     set swapfile
-     set dir=~/vimswap
-     set encoding=utf-8
-     scriptencoding utf8
-     set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
-     "set guifont=Source_Code_Pro_Light:h16:cANSI
-     " ctrlp use on window - note need to install ag (chocolaty)
-     let g:ctrlp_user_command = 'ag -i --nocolor --nogroup --hidden -g "" %s'
-elseif has("win32unix")
-     set term=xterm-256color
-     set encoding=utf-8
-     scriptencoding utf8
-     "echo 'running on msys/cygwin'
-elseif has('unix') && !has("win32unix")
-     if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
-	     runtime! archlinux.vim
-     endif
-     " Specify a directory for plugins
-     " - For Neovim: stdpath('data') . '/plugged'
-     " - Avoid using standard Vim directory names like 'plugin'
-     if executable('rg')
-	     let g:ctrlp_user_command = 'rg %s --files --hidden --follow --color=never --no-ignore --glob "!.git/*"'
-     endif
-else
-     echo 'something else'
+	set background=dark    " Setting dark mode
+	let g:gruvbox_contrast_dark = 'soft'
 endif
 
-"
-" custom options
-"
+"-----------------------------------------
+" custom options and binds
+"-----------------------------------------
 "
 
 " the vim file explorer
