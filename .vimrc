@@ -170,7 +170,6 @@ endif
 "-----------------------------------------
 " Colour scheme
 "-----------------------------------------
-colorscheme gruvbox
 set background=dark    " Setting dark mode
 let g:gruvbox_contrast_dark = 'soft'
 nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
@@ -179,6 +178,7 @@ nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
 nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
 nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
 nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+colorscheme gruvbox
 
 "-----------------------------------------
 " custom options and binds
