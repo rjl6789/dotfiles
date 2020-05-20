@@ -46,12 +46,7 @@ elseif has('unix') && !has("win32unix")
      call plug#begin('~/.vim/plugged')
      
          " Make sure you use single quotes
-         
-         " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-         Plug 'junegunn/vim-easy-align'
-         
-         " On-demand loading
-         "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+	 Plug 'ctrlpvim/ctrlp.vim'
          Plug 'scrooloose/nerdtree'
          Plug 'Xuyuanp/nerdtree-git-plugin'
          Plug 'vim-airline/vim-airline'
@@ -76,6 +71,11 @@ elseif has('unix') && !has("win32unix")
      nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
      source $HOME/.cocrc.vim
+     " ctrl-p stuff
+     if executable('rg')
+	     let g:ctrlp_user_command = 'rg %s --files --hidden --follow --color=never --no-ignore --glob "!.git/*"'
+     endif
+     let g:ctrlp_working_path_mode = 'rac'
 else
      echo 'something else'
 endif

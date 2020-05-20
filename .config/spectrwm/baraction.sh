@@ -32,7 +32,7 @@ mem() {
 
 ## temperature
 tmp() {
-	temp=$(cat "$tzone/temp")
+	temp=$(cat "${TZONE}/temp")
 	echo "$((temp/1000))C"
 }
 ## Battery
@@ -42,13 +42,20 @@ battery_charge() {
 	battery_full=$battery_path/energy_full
 	battery_current=$battery_path/energy_now
 	battery_power=$battery_path/power_now
-	if [ $battery_state == 'Discharging' ]; then
-		BATT_CONNECTED=0
-	elif [ $battery_state == 'Unknown' ]; then
-		BATT_CONNECTED=2
-	else
-		BATT_CONNECTED=1
-	fi
+
+	# the logic here works for thinkpad t470s or anything else where:
+	# - only one battery can be charging or discharging at a particular time
+	# - when in "idle" state the battery is either full/threshold/sat-there
+	#   in which case it's power is 0
+	case $battery_state in 
+		[Dd]ischarging )
+			BATT_CONNECTED=0 ;;
+		[Uu]nknown | [Ff]ull )
+			BATT_CONNECTED=2 ;;
+		* )
+			BATT_CONNECTED=1 ;; ## i.e. charging
+	esac
+
 	now=$(cat $battery_current)
 	full=$(cat $battery_full)
 	power=$(cat $battery_power)
@@ -166,17 +173,21 @@ vol() {
     echo -e "VOL: $vol"
 }
 
-SLEEP_SEC=3
 ## find temperature zone
-for file in /sys/class/thermal/thermal_zone*/type
+tinfo="$(ls -1 /sys/class/thermal/ | grep thermal_zone)"
+for folder in $tinfo
 do
+	file="/sys/class/thermal/${folder}/type"
 	ttype=$(cat "$file")
 	if [ $ttype == "x86_pkg_temp" ]; then
-		tzone=$(dirname $file)
+		TZONE=$(dirname $file)
 		break
 	fi
 done
+
+
 #loops forever outputting a line every SLEEP_SEC secs
+SLEEP_SEC=3
 
 # It seems that we are limited to how many characters can be displayed via
 # the baraction script output. And the the markup tags count in that limit.
