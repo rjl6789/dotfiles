@@ -52,85 +52,10 @@ call plug#begin('~/.vim/plugged')
 	Plug 'tpope/vim-unimpaired'
 	Plug 'chriskempson/base16-vim'
 
-	" ---------------------------------------
-	" plugin universal config
-	" note: haven't terminated the 'plug' block yet
-	" ---------------------------------------
-	"
-	" nerdtree
-	map <C-n> :NERDTreeToggle<CR>
-	" gruvbox, base16 and vim-unimpaired
-	nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
-	nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
-	nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
-	nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
-	nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
-	nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
-
-	" coc.nvim
-	source $HOME/.cocrc.vim
-
-	" lightline
-	let g:lightline = {
-	      \ 'colorscheme': 'gruvbox',
-	      \ 'active': {
-	      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
-	      \ },
-	      \ 'tabline': {
-	      \   'left': [ ['buffers'] ],
-	      \   'right': [ ['close'] ]
-	      \ },
-	      \ 'component_expand': {
-	      \   'buffers': 'lightline#bufferline#buffers'
-	      \ },
-	      \ 'component_type': {
-	      \   'buffers': 'tabsel'
-	      \ }
-	      \ }
-	let g:lightline#bufferline#show_number = 2
-	nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-	nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-	nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-	nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-	nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-	nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-	nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-	nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-	nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-	nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-
-	"" airline
-	"let g:airline#extensions#tabline#formatter = 'unique_tail'
-	"let g:airline_powerline_fonts=1
-	"let g:airline#extensions#tabline#enabled = 1
-	"let g:airline#extensions#whitespace#enabled = 0
-	"
 	"-----------------------------------------
-	" Platform specific options and plugins
+	" Platform specific plugins
 	"-----------------------------------------
-	if has('mac')
-		echo 'mac'
-	elseif has('win32') || has('win64')
-		source $VIMRUNTIME/vimrc_example.vim
-		source $VIMRUNTIME/mswin.vim
-		behave mswin
-		"
-		" sourcing the mswin.vim file adds good stuff like ctrl-c for copy
-		" but messes up ctrl-f and ctrl-h keys - put these back to normal
-		" also put back increment number (ctrl-a) and decrement (ctrl-x) keys
-		"
-		unmap <C-F>
-		unmap <C-H>
-		unmap <C-A>
-		unmap <C-X>
-		" settings for temporary files
-		set nobackup
-		set noundofile
-		set swapfile
-		set dir=~/vimswap
-		set encoding=utf-8
-		scriptencoding utf8
-		set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
+	if has('win32') || has('win64') || has("win32unix")
 		Plug 'ctrlpvim/ctrlp.vim'
 		let g:ctrlp_map = '<c-p>'
 		let g:ctrlp_cmd = 'CtrlP'
@@ -139,15 +64,7 @@ call plug#begin('~/.vim/plugged')
 		let g:ctrlp_match_window = 'min:4,max:10,results=100'
 		let g:ctrlp_max_files=0
 		let g:ctrlp_max_depth=40
-	elseif has("win32unix")
-		set term=xterm-256color
-		set encoding=utf-8
-		scriptencoding utf8
-		"echo 'running on msys/cygwin'
-		elseif has('unix') && !has("win32unix")
-		if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
-		     runtime! archlinux.vim
-		endif
+	elseif has('unix') && !has("win32unix")
 		Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 		Plug 'junegunn/fzf.vim'
 		nnoremap <C-p> :Files<cr>
@@ -156,17 +73,109 @@ call plug#begin('~/.vim/plugged')
 			\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
 		" note: in .profile have set FZF_DEFAULT_COMMAND
 		" rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"
-	else
-		echo 'something else'
 	endif
 
 call plug#end()
-"
 "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 " End of plugin configuration
 "-----------------------------------------
 " Plugins now activated. Set options that required activation
 
+" ---------------------------------------
+" plugin universal config
+" ---------------------------------------
+"
+" nerdtree
+map <C-n> :NERDTreeToggle<CR>
+" gruvbox, base16 and vim-unimpaired
+nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+
+" coc.nvim
+source $HOME/.cocrc.vim
+
+" lightline
+let g:lightline = {
+      \ 'colorscheme': 'gruvbox',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
+      \ }
+      \ }
+let g:lightline#bufferline#show_number = 2
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+
+"" airline
+"let g:airline#extensions#tabline#formatter = 'unique_tail'
+"let g:airline_powerline_fonts=1
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#whitespace#enabled = 0
+"
+"
+"-----------------------------------------
+" Platform specific options
+"-----------------------------------------
+if has('mac')
+	echo 'mac'
+elseif has('win32') || has('win64')
+	source $VIMRUNTIME/vimrc_example.vim
+	source $VIMRUNTIME/mswin.vim
+	behave mswin
+	"
+	" sourcing the mswin.vim file adds good stuff like ctrl-c for copy
+	" but messes up ctrl-f and ctrl-h keys - put these back to normal
+	" also put back increment number (ctrl-a) and decrement (ctrl-x) keys
+	"
+	unmap <C-F>
+	unmap <C-H>
+	unmap <C-A>
+	unmap <C-X>
+	" settings for temporary files
+	set nobackup
+	set noundofile
+	set swapfile
+	set dir=~/vimswap
+	set encoding=utf-8
+	scriptencoding utf8
+	set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
+elseif has("win32unix")
+	set term=xterm-256color
+	set encoding=utf-8
+	scriptencoding utf8
+	"echo 'running on msys/cygwin'
+elseif has('unix') && !has("win32unix")
+	if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
+	     runtime! archlinux.vim
+	endif
+else
+	echo 'something else'
+endif
+
+"-----------------------------------------
+" Colour scheme
+"-----------------------------------------
 if filereadable(expand("~/.vimrc_background"))
 	let base16colorspace=256
 	source ~/.vimrc_background
