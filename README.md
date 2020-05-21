@@ -1,5 +1,7 @@
 # Rob's Dots
 
+<img src=".dotimages/bar.png" width="860">
+
 The intention is to have a system whereby the tiling wm doesn't have it's config / setup get clobbered if a desktop environment gets installed.
 
 This achieved by having a wrapper around the main executable which can source a specific setup file, which auto starts apps and sets a friendly environment.
@@ -49,3 +51,4 @@ polkit-kde-authentication-agent-1.desktop -> /etc/xdg/autostart/polkit-kde-authe
 print-applet.desktop -> /etc/xdg/autostart/print-applet.desktop
 pulseaudio.desktop -> /etc/xdg/autostart/pulseaudio.desktop
 ```
+<img src=".dotimages/fullscreen.png" width="860">
