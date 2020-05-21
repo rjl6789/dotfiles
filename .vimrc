@@ -2,6 +2,41 @@
 " vimrc - universal for linux, windows, msys, cygwin
 "
 "-----------------------------------------
+" Platform specific core options
+"-----------------------------------------
+if has('mac')
+	echo 'mac'
+elseif has('win32') || has('win64')
+	source $VIMRUNTIME/vimrc_example.vim
+	source $VIMRUNTIME/mswin.vim
+	behave mswin
+	" sourcing the mswin.vim file adds good stuff like ctrl-c for copy but messes up ctrl-f and ctrl-h keys - put these back to normal also put back increment number (ctrl-a) and decrement (ctrl-x) keys
+	unmap <C-F>
+	unmap <C-H>
+	unmap <C-A>
+	unmap <C-X>
+	" settings for temporary files
+	set nobackup
+	set noundofile
+	set swapfile
+	set dir=~/vimswap
+	set encoding=utf-8
+	scriptencoding utf8
+	set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
+elseif has("win32unix")
+	set term=xterm-256color
+	set encoding=utf-8
+	scriptencoding utf8
+	"echo 'running on msys/cygwin'
+elseif has('unix') && !has("win32unix")
+	if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
+	     runtime! archlinux.vim
+	endif
+else
+	echo 'something else'
+endif
+
+"-----------------------------------------
 " ------ leader mapping ------
 "-----------------------------------------
 let g:mapleader = "\<Space>"
@@ -106,7 +141,7 @@ let g:lightline = {
       \ },
       \ 'tabline': {
       \   'left': [ ['buffers'] ],
-      \   'right': [ ['close'] ]
+      \   'right': [ ['bufnum'] ]
       \ },
       \ 'component_expand': {
       \   'buffers': 'lightline#bufferline#buffers'
@@ -131,53 +166,27 @@ nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 "-----------------------------------------
 " Platform specific options
 "-----------------------------------------
-if has('mac')
-	echo 'mac'
-elseif has('win32') || has('win64')
-	source $VIMRUNTIME/vimrc_example.vim
-	source $VIMRUNTIME/mswin.vim
-	behave mswin
-	"
-	" sourcing the mswin.vim file adds good stuff like ctrl-c for copy
-	" but messes up ctrl-f and ctrl-h keys - put these back to normal
-	" also put back increment number (ctrl-a) and decrement (ctrl-x) keys
-	"
-	unmap <C-F>
-	unmap <C-H>
-	unmap <C-A>
-	unmap <C-X>
-	" settings for temporary files
-	set nobackup
-	set noundofile
-	set swapfile
-	set dir=~/vimswap
-	set encoding=utf-8
-	scriptencoding utf8
-	set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
-elseif has("win32unix")
-	set term=xterm-256color
-	set encoding=utf-8
-	scriptencoding utf8
-	"echo 'running on msys/cygwin'
-elseif has('unix') && !has("win32unix")
-	if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
-	     runtime! archlinux.vim
-	endif
-else
-	echo 'something else'
+if has('win32') || has('win64') || has("win32unix")
+	if executable('rg')
+		set grepprg=rg\ --color=never
+		let g:ctrlp_user_command = 'rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --no-messages --glob "!.git/*"'
+		let g:ctrlp_use_caching = 0
+	else
+		let g:ctrlp_clear_cache_on_exit = 0
+	endif	
 endif
 
 "-----------------------------------------
 " Colour scheme
 "-----------------------------------------
-set background=dark    " Setting dark mode
-let g:gruvbox_contrast_dark = 'soft'
 nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
 nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
 nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
 nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
 nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
 nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+let g:gruvbox_contrast_dark = 'soft'
+set background=dark    " Setting dark mode
 colorscheme gruvbox
 
 "-----------------------------------------
