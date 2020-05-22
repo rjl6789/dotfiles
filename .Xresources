@@ -75,7 +75,7 @@ st*font: DejaVu Sans Mono for Powerline:style=Book:size=12
 !
 
 !! gruvbox Colorscheme
-*cursorColor: #afbfbf
+*cursorColor: #d65d0e
 *foreground: #ebdbb2
 *background: #282828
 !
@@ -118,7 +118,7 @@ st*font: DejaVu Sans Mono for Powerline:style=Book:size=12
 
 !! xterm Colorscheme
 !! gruvbox Colorscheme
-xterm*cursorColor: #afbfbf
+xterm*cursorColor: #d65d0e
 xterm*foreground: #ebdbb2
 xterm*background: #282828
 !

@@ -365,3 +365,4 @@ export PURE_PROMPT_SYMBOL="#"
 #fi
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"'
+alias vim='nvim'

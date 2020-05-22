@@ -229,7 +229,7 @@ let g:netrw_list_hide=ghregex
 set clipboard^=unnamed,unnamedplus
 
 noremap <silent> <Leader>hh :set hlsearch! hlsearch?<CR>
-hi Search cterm=NONE ctermfg=White ctermbg=Cyan
+"hi Search cterm=NONE ctermfg=White ctermbg=Cyan
 
 " change windows with ctrl+(hjkl)
 nnoremap <C-J> <C-W><C-J>
