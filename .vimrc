@@ -1,18 +1,31 @@
 "
 " vimrc - universal for linux, windows, msys, cygwin
 "
+" defaults for vim
+source ~/.defaults.vim
 "-----------------------------------------
 " Platform specific core options
 "-----------------------------------------
 if has('mac')
 	echo 'mac'
 elseif has('win32') || has('win64')
-	source $VIMRUNTIME/vimrc_example.vim
 	source $VIMRUNTIME/mswin.vim
-	behave mswin
+	"if !has('nvim')
+	"	source $VIMRUNTIME/vimrc_example.vim
+	"endif
+	let g:PATHBASE = 'C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;'
+	let g:PATHNODEJS = 'C:\Program Files\nodejs;'
+	let g:PATHGIT = 'C:\Program Files\Git\bin\;'
+	let g:PATHGVIM = 'C:\Program Files\Vim\vim82;'
+	let g:PATHNVIM = $USERPROFILE . '\nvim\bin;'
+	let g:PATHMINGW64 = 'C:\MinGW\mingw64\bin;'
+	let g:PATHLLVM = 'C:\Program Files\LLVM\bin'
+	execute "let $PATH = '" . PATHBASE . PATHNODEJS . PATHGIT . PATHGVIM . PATHNVIM . PATHMINGW64 . PATHLLVM . "'"
 	" sourcing the mswin.vim file adds good stuff like ctrl-c for copy but messes up ctrl-f and ctrl-h keys - put these back to normal also put back increment number (ctrl-a) and decrement (ctrl-x) keys
-	unmap <C-F>
-	unmap <C-H>
+	if !has('nvim')
+		unmap <C-F>
+		unmap <C-H>
+	endif
 	unmap <C-A>
 	unmap <C-X>
 	" settings for temporary files
@@ -22,7 +35,9 @@ elseif has('win32') || has('win64')
 	set dir=~/vimswap
 	set encoding=utf-8
 	scriptencoding utf8
-	set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
+	if !has('nvim')
+		set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
+	end
 elseif has("win32unix")
 	set term=xterm-256color
 	set encoding=utf-8
@@ -83,7 +98,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'mengelbrecht/lightline-bufferline'
 	Plug 'shinchu/lightline-gruvbox.vim'
 	Plug 'tpope/vim-unimpaired'
-	if v:version > 800
+	if v:version || has ('nvim') > 800
 		Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	endif
 	"-----------------------------------------
@@ -130,7 +145,7 @@ let g:ctrlp_max_depth=40
 map <C-n> :NERDTreeToggle<CR>
 
 " coc.nvim
-if v:version > 800
+if v:version > 800 || has('nvim')
 	source $HOME/.cocrc.vim
 endif
 
