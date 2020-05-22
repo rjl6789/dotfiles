@@ -22,11 +22,21 @@ set signcolumn=yes
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <leader><TAB>
+"
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+      \ "\<TAB>" :
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
+
+" spelling
+nnoremap <leader>s :call coc#config('cSpell.enabled', v:false)<CR>
+nnoremap <leader>ss :call coc#config('cSpell.enabled', v:true)<CR>
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -86,8 +96,10 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+"xmap <leader>a  <Plug>(coc-codeaction-selected)
+"nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>a :call CocActionAsync('codeAction')<CR>
+nmap <leader>a :call CocActionAsync('codeAction')<CR>
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
