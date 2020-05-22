@@ -17,7 +17,7 @@ elseif has('win32') || has('win64')
 	let g:PATHNODEJS = 'C:\Program Files\nodejs;'
 	let g:PATHGIT = 'C:\Program Files\Git\bin\;'
 	let g:PATHGVIM = 'C:\Program Files\Vim\vim82;'
-	let g:PATHNVIM = $USERPROFILE . '\nvim\bin;'
+	let g:PATHNVIM = $USERPROFILE . '\Neovim\bin;'
 	let g:PATHMINGW64 = 'C:\MinGW\mingw64\bin;'
 	let g:PATHLLVM = 'C:\Program Files\LLVM\bin'
 	execute "let $PATH = '" . PATHBASE . PATHNODEJS . PATHGIT . PATHGVIM . PATHNVIM . PATHMINGW64 . PATHLLVM . "'"
