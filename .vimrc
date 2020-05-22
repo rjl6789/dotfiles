@@ -99,7 +99,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'mengelbrecht/lightline-bufferline'
 	Plug 'shinchu/lightline-gruvbox.vim'
 	Plug 'tpope/vim-unimpaired'
-	if v:version || has ('nvim') > 800
+	if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
 		Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	endif
 	"-----------------------------------------
@@ -146,7 +146,7 @@ let g:ctrlp_max_depth=40
 map <C-n> :NERDTreeToggle<CR>
 
 " coc.nvim
-if v:version > 800 || has('nvim')
+if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
 	source $HOME/.cocrc.vim
 endif
 
