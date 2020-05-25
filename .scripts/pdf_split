@@ -1,13 +1,17 @@
 #!/bin/bash
 
 function pdf_split(){
+    tfile=$(mktemp /tmp/splitpdfXXXX)
     for file in "$@"; do
         if [ "${file##*.}" != "pdf" ]; then
             echo "Skip $file because it's not PDF file";
             continue
         fi; 
-        pages=$(pdfinfo "$file" | grep "Pages" | awk '{print $2}') 
-        echo "Detect $pages in $file";
+	pdfinfo "$file" > "$tfile"
+	lll=$(cat "$tfile" | wc -l)
+        echo "hello"
+	pages=$(tail --lines=$(($lll-1)) $tfile | grep "Pages" | awk '{print $2}')
+        echo "Detect $pages in $file"
         filename="${file%.*}";
         unset Outfile;
         for i in $(seq 1 "$pages"); do

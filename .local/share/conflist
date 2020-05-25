@@ -1,0 +1,31 @@
+# friendy name (unique)	path to file or directory			command
+#
+# edit = $EDITOR
+# sedit = sudo $EDITOR
+# dsearch = vimdir
+#
+alacritty		$HOME/.config/alacritty/alacritty.yml		edit
+spectrwm		$HOME/.config/spectrwm/spectrwm.conf		edit
+Xresources		$HOME/.Xresources				edit
+xprofile		$HOME/.xprofile					edit
+xsession-spectrwm	$HOME/.xsession-spectrwm			edit
+profile			$HOME/.profile					edit
+zshrc			$HOME/.zshrc					edit
+bashrc			$HOME/.bashrc					edit
+cocrc.vim		$HOME/.cocrc.vim				edit
+dunst			$HOME/.config/dunst/dunstrc			edit
+rofi			$HOME/.config/rofi/config			edit
+conkyrc			$HOME/.conkyrc					edit
+autostart		$HOME/.config/autostart				edit
+autostart-dwm		$HOME/.config/autostart-dwm			edit
+defaults.vim		$HOME/.defaults.vim				edit
+scripts			$HOME/.scripts					dsearch
+stalonetrayrc		$HOME/.stalonetrayrc				edit
+tmux.conf		$HOME/.tmux.conf				edit
+vimrc			$HOME/.vimrc					edit
+xinitc			$HOME/.xinitc					edit
+README.md		$HOME/README.md					edit
+nvim			$HOME/.config/nvim/init.vim			edit
+coc-settings		$HOME/.config/nvim/coc-settings.json		edit
+tlp			/etc/tlp.d/00-t470s.conf			sedit
+conflist		$HOME/.local/share/conflist			edit

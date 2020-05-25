@@ -1,7 +1,1 @@
-{
-	//  here's a comment
-	// "diagnostic.messageTarget": "echo",
-	"cSpell.language": "en-GB",
-	"cSpell.enabled": false
-
-}
+/home/rob/.vim/coc-settings.json

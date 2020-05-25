@@ -1,1 +1,7 @@
-/home/rob/.config/nvim/coc-settings.json
+{
+	//  here's a comment
+	// "diagnostic.messageTarget": "echo",
+	"cSpell.language": "en-GB",
+	"cSpell.enabled": false
+
+}

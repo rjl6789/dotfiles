@@ -99,6 +99,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'mengelbrecht/lightline-bufferline'
 	Plug 'shinchu/lightline-gruvbox.vim'
 	Plug 'tpope/vim-unimpaired'
+	Plug 'ap/vim-css-color'
 	if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
 		Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	endif
@@ -179,6 +180,7 @@ nmap <Leader>8 <Plug>lightline#bufferline#go(8)
 nmap <Leader>9 <Plug>lightline#bufferline#go(9)
 nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 let g:lightline#bufferline#filename_modifier = ':t'
+let g:lightline_gruvbox_style = 'hard_left'
 
 "
 "-----------------------------------------
@@ -226,7 +228,8 @@ let ghregex='\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_list_hide=ghregex
 
 " system clipboard (requires +clipboard)
-set clipboard^=unnamed,unnamedplus
+"set clipboard^=unnamed,unnamedplus
+set clipboard+=unnamedplus
 
 noremap <silent> <Leader>hh :set hlsearch! hlsearch?<CR>
 "hi Search cterm=NONE ctermfg=White ctermbg=Cyan
