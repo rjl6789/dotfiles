@@ -150,6 +150,8 @@ map <C-n> :NERDTreeToggle<CR>
 if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
 	source $HOME/.cocrc.vim
 endif
+" disable Coc
+autocmd VimEnter * CocDisable
 
 " lightline
 let g:lightline = {
