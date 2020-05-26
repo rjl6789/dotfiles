@@ -106,21 +106,11 @@ call plug#begin('~/.vim/plugged')
 	"-----------------------------------------
 	" Platform specific plugins
 	"-----------------------------------------
-	if has('win32') || has('win64') || has("win32unix")
+	if executable('fzf') && executable('rg') && !has('win32unix')
+		Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+		Plug 'junegunn/fzf.vim'
+	else
 		Plug 'ctrlpvim/ctrlp.vim'
-	elseif has('unix') && !has("win32unix")
-		if executable('fzf')
-			Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-			Plug 'junegunn/fzf.vim'
-			nnoremap <C-p> :Files<cr>
-			" Pass an empty option dictionary if the screen is narrow
-			command! -bang -nargs=? -complete=dir Files
-				\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
-			" note: in .profile have set FZF_DEFAULT_COMMAND
-			" rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"
-		else
-			Plug 'ctrlpvim/ctrlp.vim'
-		endif
 	endif
 
 call plug#end()
@@ -134,14 +124,6 @@ call plug#end()
 " ---------------------------------------
 "
 
-" CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_match_window = 'min:4,max:10,results=100'
-let g:ctrlp_max_files=0
-let g:ctrlp_max_depth=40
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
@@ -188,7 +170,26 @@ let g:lightline_gruvbox_style = 'hard_left'
 "-----------------------------------------
 " Platform specific options
 "-----------------------------------------
-if has('win32') || has('win64') || has("win32unix")
+if executable('fzf') && executable('rg') && !has('win32unix')
+	let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/**"'
+	let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
+	nnoremap <C-p> :Files<cr>
+	let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+	" Preview window: Pass an empty option dictionary if the screen is narrow
+	if has('win32') || has('win64')
+		" preview window too slow if use the nice built in previewer
+		command! -bang -nargs=? -complete=dir Files
+			\ call fzf#vim#files(<q-args>, &columns > 80 ? {'options': ['--layout=reverse', '--info=inline', '--preview', 'cat {}']} : {}, <bang>0)
+	else
+		" this command is the default
+		" (install 'bat' for syntax highlighting)
+		command! -bang -nargs=? -complete=dir Files
+			\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
+	endif
+	" Empty value to disable preview window altogether
+	" let g:fzf_preview_window = ''
+else
+	" CtrlP
 	if executable('rg')
 		set grepprg=rg\ --color=never
 		let g:ctrlp_user_command = 'rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --no-messages --glob "!.git/*"'
@@ -196,6 +197,13 @@ if has('win32') || has('win64') || has("win32unix")
 	else
 		let g:ctrlp_clear_cache_on_exit = 0
 	endif	
+	let g:ctrlp_map = '<c-p>'
+	let g:ctrlp_cmd = 'CtrlP'
+	let g:ctrlp_working_path_mode = 'ra'
+	let g:ctrlp_show_hidden = 1
+	let g:ctrlp_match_window = 'min:4,max:10,results=100'
+	let g:ctrlp_max_files=0
+	let g:ctrlp_max_depth=40
 endif
 
 "-----------------------------------------
