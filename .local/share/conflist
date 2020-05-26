@@ -16,10 +16,6 @@ cocrc.vim		$HOME/.cocrc.vim				edit
 dunst			$HOME/.config/dunst/dunstrc			edit
 rofi			$HOME/.config/rofi/config			edit
 conkyrc			$HOME/.conkyrc					edit
-autostart		$HOME/.config/autostart				edit
-autostart-dwm		$HOME/.config/autostart-dwm			edit
-defaults.vim		$HOME/.defaults.vim				edit
-scripts			$HOME/.scripts					dsearch
 stalonetrayrc		$HOME/.stalonetrayrc				edit
 tmux.conf		$HOME/.tmux.conf				edit
 vimrc			$HOME/.vimrc					edit
@@ -27,5 +23,9 @@ xinitc			$HOME/.xinitc					edit
 README.md		$HOME/README.md					edit
 nvim			$HOME/.config/nvim/init.vim			edit
 coc-settings		$HOME/.config/nvim/coc-settings.json		edit
-tlp			/etc/tlp.d/00-t470s.conf			sedit
 conflist		$HOME/.local/share/conflist			edit
+defaults.vim		$HOME/.defaults.vim				edit
+autostart		$HOME/.config/autostart				dsearch
+autostart-dwm		$HOME/.config/autostart-dwm			dsearch
+scripts			$HOME/.scripts					dsearch
+tlp			/etc/tlp.d/00-t470s.conf			sedit

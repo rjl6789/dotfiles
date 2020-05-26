@@ -117,3 +117,5 @@ fi
 #  exec tmux new-session -A -D -s ssh_tmux
 #fi
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+. /usr/share/fzf/completion.bash
+. /usr/share/fzf/key-bindings.bash
