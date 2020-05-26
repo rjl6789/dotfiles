@@ -131,9 +131,9 @@ map <C-n> :NERDTreeToggle<CR>
 " coc.nvim
 if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
 	source $HOME/.cocrc.vim
+	" disable Coc
+	autocmd VimEnter * CocDisable
 endif
-" disable Coc
-autocmd VimEnter * CocDisable
 
 " lightline
 let g:lightline = {
@@ -190,9 +190,15 @@ if executable('fzf') && executable('rg') && !has('win32unix')
 	" let g:fzf_preview_window = ''
 else
 	" CtrlP
-	if executable('rg')
+	" (note in msys2/cygwin - vim is a 'unix' app but rg and ag are
+	" only available as mingw binaries - they don't play nice)
+	if executable('rg') && !has(win32unix)
 		set grepprg=rg\ --color=never
 		let g:ctrlp_user_command = 'rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --no-messages --glob "!.git/*"'
+		let g:ctrlp_use_caching = 0
+	elseif executable('ag') && !has(win32unix)
+		set grepprg=ag\ --nogroup\ --nocolor
+		let g:ctrlp_user_command = 'ag -l --nocolor -g ""' 
 		let g:ctrlp_use_caching = 0
 	else
 		let g:ctrlp_clear_cache_on_exit = 0
