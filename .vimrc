@@ -15,7 +15,7 @@ elseif has('win32') || has('win64')
 	"endif
 	let g:PATHBASE = 'C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;'
 	let g:PATHNODEJS = 'C:\Program Files\nodejs;'
-	let g:PATHGIT = 'C:\Program Files\Git\bin\;'
+	let g:PATHGIT = $USERPROFILE . '\git\bin;'
 	let g:PATHGVIM = 'C:\Program Files\Vim\vim82;'
 	let g:PATHNVIM = $USERPROFILE . '\Neovim\bin;'
 	let g:PATHMINGW64 = 'C:\MinGW\mingw64\bin;'
@@ -45,7 +45,7 @@ elseif has("win32unix")
 	"echo 'running on msys/cygwin'
 elseif has('unix') && !has("win32unix")
 	if filereadable(expand("/usr/share/vim/vimfiles/archlinux.vim"))
-	     runtime! archlinux.vim
+		runtime! archlinux.vim
 	endif
 	set mouse=a
 else
@@ -76,7 +76,7 @@ set t_Co=256
 syntax enable
 " turn of syntax when diff'ing
 if &diff
-    syntax off
+	syntax off
 endif
 " turn of graphical tabs in gvim
 if has('gui_running')
@@ -90,28 +90,29 @@ endif
 " ok to apply "settings" though
 "-----------------------------------------
 call plug#begin('~/.vim/plugged')
-     
-         " Make sure you use single quotes
-	Plug 'scrooloose/nerdtree'
-	Plug 'Xuyuanp/nerdtree-git-plugin'
-	Plug 'morhetz/gruvbox'
-	Plug 'itchyny/lightline.vim'
-	Plug 'mengelbrecht/lightline-bufferline'
-	Plug 'shinchu/lightline-gruvbox.vim'
-	Plug 'tpope/vim-unimpaired'
-	Plug 'ap/vim-css-color'
-	if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
-		Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	endif
-	"-----------------------------------------
-	" Platform specific plugins
-	"-----------------------------------------
-	if executable('fzf')
-		Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-		Plug 'junegunn/fzf.vim'
-	else
-		Plug 'ctrlpvim/ctrlp.vim'
-	endif
+
+" Make sure you use single quotes
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'morhetz/gruvbox'
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'tpope/vim-unimpaired'
+Plug 'ap/vim-css-color'
+Plug 'vimwiki/vimwiki'
+"-----------------------------------------
+" Platform specific plugins
+"-----------------------------------------
+if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
+if executable('fzf')
+	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+else
+	Plug 'ctrlpvim/ctrlp.vim'
+endif
 
 call plug#end()
 "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,36 +123,37 @@ call plug#end()
 " ---------------------------------------
 " plugin universal config
 " ---------------------------------------
-"
 
-
+" vimwiki
+au FileType vimwiki setlocal
+			\ shiftwidth=4
+			\ tabstop=4
+			\ noexpandtab
+let g:vimwiki_list = [
+			\ {'path': '~/Documents/VimWiki/atr.wiki'},
+			\ {'path': '~/Documents/VimWiki/personal.wiki'}
+			\ ]
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
-" coc.nvim
-if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
-	source $HOME/.cocrc.vim
-	" disable Coc
-	autocmd VimEnter * CocDisable
-endif
 
 " lightline
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'tabline': {
-      \   'left': [ ['buffers'] ],
-      \   'right': [ ['bufnum'] ]
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers'
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel'
-      \ }
-      \ }
+			\ 'colorscheme': 'gruvbox',
+			\ 'active': {
+			\   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+			\ },
+			\ 'tabline': {
+			\   'left': [ ['buffers'] ],
+			\   'right': [ ['bufnum'] ]
+			\ },
+			\ 'component_expand': {
+			\   'buffers': 'lightline#bufferline#buffers'
+			\ },
+			\ 'component_type': {
+			\   'buffers': 'tabsel'
+			\ }
+			\ }
 let g:lightline#bufferline#show_number = 2
 nmap <Leader>1 <Plug>lightline#bufferline#go(1)
 nmap <Leader>2 <Plug>lightline#bufferline#go(2)
@@ -170,10 +172,18 @@ let g:lightline_gruvbox_style = 'hard_left'
 "-----------------------------------------
 " Platform specific options
 "-----------------------------------------
-	" (note in msys2/cygwin - vim is a 'unix' app but rg and ag are
-	" only available as mingw binaries - they don't play nice)
-	" also fzf doesn't support mintty - the default msys2 and cygwin tty -
-	" use conemu instead
+"
+" coc.nvim - not in msys or cygwin as horribly slow
+" also disable by default
+if ( v:version > 800 || has ('nvim') ) && !has('win32unix')
+	source $HOME/.cocrc.vim
+	" disable Coc
+	autocmd VimEnter * CocDisable
+endif
+" (note in msys2/cygwin - vim is a 'unix' app but rg and ag are
+" only available as mingw binaries - they don't play nice)
+" also fzf doesn't support mintty - the default msys2 and cygwin tty -
+" use conemu instead
 if executable('fzf') && !has('win32unix')
 	if executable('rg')
 		let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/**"'
@@ -189,12 +199,12 @@ if executable('fzf') && !has('win32unix')
 	if has('win32') || has('win64')
 		" preview window too slow if use the nice built in previewer
 		command! -bang -nargs=? -complete=dir Files
-			\ call fzf#vim#files(<q-args>, &columns > 80 ? {'options': ['--layout=reverse', '--info=inline', '--preview', 'cat {}']} : {}, <bang>0)
+					\ call fzf#vim#files(<q-args>, &columns > 80 ? {'options': ['--layout=reverse', '--info=inline', '--preview', 'cat {}']} : {}, <bang>0)
 	else
 		" this command is the default
 		" (install 'bat' for syntax highlighting)
 		command! -bang -nargs=? -complete=dir Files
-			\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
+					\ call fzf#vim#files(<q-args>, &columns > 80 ? fzf#vim#with_preview() : {}, <bang>0)
 	endif
 	" Empty value to disable preview window altogether
 	" let g:fzf_preview_window = ''
@@ -288,7 +298,7 @@ nnoremap <silent> \h :bprevious<cr>
 nnoremap <silent> \l :bnext<cr>
 nnoremap <silent> - :bprevious<cr>
 nnoremap <silent> + :bnext<cr>
-nnoremap <silent> <Backspace> <C-^>
+"nnoremap <silent> <Backspace> <C-^>
 nnoremap <silent> bd :bd<cr>
 nnoremap <silent> wbd :w <bar> bd<cr>
 
@@ -312,51 +322,51 @@ command! W execute 'silent w !sudo tee % >/dev/null' | edit!
 " quit the current buffer and switch to the next
 " without this vim will leave you on an empty buffer after quiting the current
 function! <SID>quitbuffer() abort
-    let l:bf = bufnr('%')
-    let l:pb = bufnr('#')
-    if buflisted(l:pb)
-        buffer #
-    else
-        bnext
-    endif
-    if bufnr('%') == l:bf
-        new
-    endif
-    if buflisted(l:bf)
-        execute('bdelete! ' . l:bf)
-    endif
+	let l:bf = bufnr('%')
+	let l:pb = bufnr('#')
+	if buflisted(l:pb)
+		buffer #
+	else
+		bnext
+	endif
+	if bufnr('%') == l:bf
+		new
+	endif
+	if buflisted(l:bf)
+		execute('bdelete! ' . l:bf)
+	endif
 endfunction
 
 " switch active buffer based on pattern matching
 " if more than one match is found then list the matches to choose from
 function! <SID>bufferselect(pattern) abort
-    let l:bufcount = bufnr('$')
-    let l:currbufnr = 1
-    let l:nummatches = 0
-    let l:matchingbufnr = 0
-    " walk the buffer count
-    while l:currbufnr <= l:bufcount
-        if (bufexists(l:currbufnr))
-            let l:currbufname = bufname(l:currbufnr)
-            if (match(l:currbufname, a:pattern) > -1)
-                echo l:currbufnr.': '.bufname(l:currbufnr)
-                let l:nummatches += 1
-                let l:matchingbufnr = l:currbufnr
-            endif
-        endif
-        let l:currbufnr += 1
-    endwhile
+	let l:bufcount = bufnr('$')
+	let l:currbufnr = 1
+	let l:nummatches = 0
+	let l:matchingbufnr = 0
+	" walk the buffer count
+	while l:currbufnr <= l:bufcount
+		if (bufexists(l:currbufnr))
+			let l:currbufname = bufname(l:currbufnr)
+			if (match(l:currbufname, a:pattern) > -1)
+				echo l:currbufnr.': '.bufname(l:currbufnr)
+				let l:nummatches += 1
+				let l:matchingbufnr = l:currbufnr
+			endif
+		endif
+		let l:currbufnr += 1
+	endwhile
 
-    " only one match
-    if (l:nummatches == 1)
-        execute ':buffer '.l:matchingbufnr
-    elseif (l:nummatches > 1)
-        " more than one match
-        let l:desiredbufnr = input('Enter buffer number: ')
-        if (strlen(l:desiredbufnr) != 0)
-            execute ':buffer '.l:desiredbufnr
-        endif
-    else
-        echoerr 'No matching buffers'
-    endif
+	" only one match
+	if (l:nummatches == 1)
+		execute ':buffer '.l:matchingbufnr
+	elseif (l:nummatches > 1)
+		" more than one match
+		let l:desiredbufnr = input('Enter buffer number: ')
+		if (strlen(l:desiredbufnr) != 0)
+			execute ':buffer '.l:desiredbufnr
+		endif
+	else
+		echoerr 'No matching buffers'
+	endif
 endfunction
