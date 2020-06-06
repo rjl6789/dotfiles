@@ -116,6 +116,12 @@ st*font: DejaVu Sans Mono for Powerline:style=Book:size=12
 ! Application specific color schemes
 !---------------------------------------------------------
 
+dmenu.font:mononoki Nerd Font Mono:size=12
+dmenu.background:#303030
+dmenu.foreground: #ebdbb2
+dmenu.selbackground: #d65d0e
+dmenu.selforeground: #282828
+
 !! xterm Colorscheme
 !! gruvbox Colorscheme
 xterm*cursorColor: #d65d0e

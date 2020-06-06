@@ -363,8 +363,20 @@ export PURE_PROMPT_SYMBOL="#"
 # 	sleep 2
 #	exec tmux new-session -A -D -s main
 #fi
+
+. /usr/share/fzf/completion.zsh
+. /usr/share/fzf/key-bindings.zsh
+
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --color=never --no-ignore --smart-case --no-ignore-vcs --glob "!.git/*"'
 alias vim='nvim'
-. /usr/share/fzf/completion.zsh
-. /usr/share/fzf/key-bindings.zsh
+
+alias pw="PASSWORD_STORE_DIR=$HOME/.password-store-rob PASSWORD_STORE_GIT=$HOME/.password-store-rob pass"
+#export PASSWORD_STORE_DIR="$HOME/.password-store-rob"
+#export PASSWORD_STORE_GIT="$HOME/.password-store-rob"
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+alias mw="PASSWORD_STORE_DIR=$HOME/.pass/mutt mw"
+alias mailsync="PASSWORD_STORE_DIR=$HOME/.pass/mutt mailsync"
+alias neomutt="PASSWORD_STORE_DIR=$HOME/.pass/mutt neomutt"
+alias mbsync="PASSWORD_STORE_DIR=$HOME/.pass/mutt mbsync"
