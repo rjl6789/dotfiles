@@ -120,6 +120,6 @@ alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 . /usr/share/fzf/completion.bash
 . /usr/share/fzf/key-bindings.bash
 alias pw="PASSWORD_STORE_DIR=~/.password-store-rob PASSWORD_STORE_GIT=~/.password-store-rob pass"
-alias mw="PASSWORD_STORE_DIR=$HOME/.pass/mutt mw"
-alias mailsync="PASSWORD_STORE_DIR=$HOME/.pass/mutt mailsync"
+#alias mw="PASSWORD_STORE_DIR=$HOME/.pass/mutt mw"
+#alias mailsync="PASSWORD_STORE_DIR=$HOME/.pass/mutt mailsync"
 alias neomutt="PASSWORD_STORE_DIR=$HOME/.pass/mutt neomutt"
